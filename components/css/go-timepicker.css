@@ -1,0 +1,13 @@
+.go-timepicker-map {
+	display: none;
+	margin: auto;
+	text-align: center;
+}
+
+.go-timepicker-map div, map {
+	margin: auto;
+}
+
+.go-timepicker-map .timezone-pin {
+	padding-top: 4px;
+}
