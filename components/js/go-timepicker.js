@@ -1,13 +1,11 @@
-( function( $ ) {
-	var go_timepicker = {
-		base: go_timepicker_base,
-		timezone_detected: false
-	};
+var go_timepicker = {
+	base: go_timepicker_base,
+	timezone_detected: false
+};
 
+( function( $ ) {
 	/**
-	 * Sets up date and time pickers across all panels
-	 * Added click function to get around not being able
-	 * to reopen datepicker after hitting esc key.
+	 * Sets up date and time pickers
 	 */
 	go_timepicker.date_picker = function() {
 		$.datepicker.setDefaults({
@@ -27,6 +25,7 @@
 				stepMinute: 5
 			});
 
+			// gets around not being able to reopen datepicker after hitting esc key.
 			$( this ).on( 'click', function() {
 				$( this ).datetimepicker( 'show' );
 			});
@@ -70,7 +69,7 @@
 			$map_div = $( '#timezone-picker' );
 			$map_div.toggle();
 
-			var current_timezone = $('#' + go_timepicker.base + '-timezone').val();
+			var current_timezone = $( '#' + go_timepicker.base + '-timezone' ).val();
 
 			if ( current_timezone ) {
 				// if they already have a timezone set, auto-select it
