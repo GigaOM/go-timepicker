@@ -44,6 +44,10 @@ class GO_Timepicker
 	{
 		add_action( 'init', array( $this, 'init' ) );
 
+		// you can use the pickers either via singleton or these actions
+		add_action( 'go_timepicker_timezone_picker', array( $this, 'timezone_picker' ), 10, 1 );
+		add_action( 'go_timepicker_datetime_picker', array( $this, 'datetime_picker' ), 10, 1 );
+
 		// allow overriding of the default offset timezone mapping
 		$this->offset_tz_map = apply_filters( 'go_timepicker_offset_tz_map', $this->offset_tz_map );
 	}//end __construct
