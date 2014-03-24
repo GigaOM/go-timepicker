@@ -35,7 +35,6 @@ class GO_Timepicker
 	);
 
 	private $timepicker_count = 0;
-	private $tz_picker_count = 0;
 	private $version = 1;
 
 	/**
@@ -137,11 +136,11 @@ class GO_Timepicker
 		$this->timepicker_count++;
 
 		$defaults = array(
-			'field_name' => 'timezone',
 			'field_id' => 'go-timepicker-' . $this->timepicker_count,
+			'field_name' => 'timezone',
+			'label' => 'Date/time',
 			'map_id' => 'go-timezone-' . $this->timepicker_count,
 			'value' => '',
-			'label' => 'Date/time',
 		);
 		$args = wp_parse_args( $args, $defaults );
 
@@ -160,13 +159,11 @@ class GO_Timepicker
 	 */
 	public function timezone_picker( $args )
 	{
-		$this->tz_picker_count++;
-
 		$defaults = array(
-			'show_selector' => TRUE,
 			'field_name' => 'timezone',
-			'show_map' => TRUE,
 			'map_id' => $this->id_base . '-map',
+			'show_map' => TRUE,
+			'show_selector' => TRUE,
 			'value' => FALSE,
 		);
 		$args = wp_parse_args( $args, $defaults );
