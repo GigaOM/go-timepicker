@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Gigaom Timepicker
  * Plugin URI: https://event.gigaom.com
- * Description: Easiy add a timepicker with timezone map selection
+ * Description: Easily add a timepicker with timezone map selection
  * Version: 0.1
  * Author: Gigaom
  * Author URI: http://gigaom.com/
