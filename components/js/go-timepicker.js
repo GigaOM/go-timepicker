@@ -60,14 +60,13 @@ var go_timepicker = {
 		// Show/hide map
 		$( document ).on( 'click', '.show-tz-map', function( e ) {
 			e.preventDefault();
-			$button = $( this );
+			var $button = $( this );
 
 			go_timepicker.tz_button_text = 'Show Map' == $button.text() ? 'Hide Map' : 'Show Map';
 
 			$button.text( go_timepicker.tz_button_text );
 
-			$map_div = $( '#timezone-picker' );
-			$map_div.toggle();
+			$( '#timezone-picker' ).toggle();
 
 			var current_timezone = $( '#' + go_timepicker.base + '-timezone' ).val();
 
