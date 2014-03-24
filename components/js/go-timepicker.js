@@ -84,7 +84,8 @@ var go_timepicker = {
 		});
 	};
 
-	go_timepicker.timezone_picker();
-	go_timepicker.date_picker();
-
+	$( function() {
+		go_timepicker.timezone_picker();
+		go_timepicker.date_picker();
+	});
 })( jQuery );
