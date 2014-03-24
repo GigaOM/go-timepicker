@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Gigaom Timepicker
- * Plugin URI: http://gigaom.com
+ * Plugin URI: http://kitchen.gigaom.com
  * Description: Easily add a timepicker with timezone map selection
  * Version: 0.1
  * Author: Gigaom
