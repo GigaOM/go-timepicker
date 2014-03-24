@@ -47,11 +47,6 @@ class GO_Timepicker
 
 		// allow overriding of the default offset timezone mapping
 		$this->offset_tz_map = apply_filters( 'go_timepicker_offset_tz_map', $this->offset_tz_map );
-
-		if ( ! is_admin() )
-		{
-			return;
-		}//end if
 	}//end __construct
 
 	/**
