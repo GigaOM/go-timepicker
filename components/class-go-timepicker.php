@@ -35,6 +35,7 @@ class GO_Timepicker
 	);
 
 	private $timepicker_count = 0;
+	private $timezonepicker_count = 0;
 	private $version = 1;
 
 	/**
@@ -140,10 +141,9 @@ class GO_Timepicker
 		$this->timepicker_count++;
 
 		$defaults = array(
-			'field_id' => 'go-timepicker-' . $this->timepicker_count,
-			'field_name' => 'timezone',
+			'field_id' => $this->id_base . '-datetime-' . $this->timepicker_count,
+			'field_name' => 'datetime',
 			'label' => 'Date/time',
-			'map_id' => 'go-timezone-' . $this->timepicker_count,
 			'value' => '',
 		);
 		$args = wp_parse_args( $args, $defaults );
@@ -163,9 +163,12 @@ class GO_Timepicker
 	 */
 	public function timezone_picker( $args )
 	{
+		$this->timezonepicker_count++;
+
 		$defaults = array(
+			'field_id' => $this->id_base . '-timezone-' . $this->timezonepicker_count,
 			'field_name' => 'timezone',
-			'map_id' => $this->id_base . '-map',
+			'map_id' => $this->id_base . '-map-' . $this->timezonepicker_count,
 			'show_map' => TRUE,
 			'show_selector' => TRUE,
 			'value' => FALSE,
@@ -178,14 +181,13 @@ class GO_Timepicker
 
 		if ( $args['show_selector'] )
 		{
-			$field_id = esc_attr( $this->id_base . '-timezone' );
 			?>
-			<div id="timezone-selector">
-				<label for="<?php echo $field_id; ?>">Timezone</label>
+			<div class="timezone-selector">
+				<label for="<?php echo esc_attr( $args['field_id'] ); ?>">Timezone</label>
 
 				<?php echo $args['before_select']; ?>
 
-				<select id="<?php echo $field_id; ?>" name="<?php echo esc_attr( $args['field_name'] ); ?>">
+				<select id="<?php echo esc_attr( $args['field_id'] ); ?>" name="<?php echo esc_attr( $args['field_name'] ); ?>">
 					<option value="">- None -</option>
 					<?php
 					foreach( $this->map_data() as $timezone_name => $timezone )
@@ -215,11 +217,18 @@ class GO_Timepicker
 			$this->enqueue_scripts();
 
 			?>
-			<button class="button show-tz-map" value="Show map">Show Map</button>
-			<div class="<?php echo esc_attr( $this->id_base ); ?>-map" id="timezone-picker" "<?php echo esc_attr( $args['map_id'] ); ?>">
-				<img id="timezone-image" src="<?php echo plugins_url( 'images/gray-600.png', __FILE__ ); ?>" width="600" usemap="#timezone-map" />
+			<button class="button show-tz-map" value="Show map">Show map</button>
+			<div class="<?php echo esc_attr( $this->id_base ); ?>-map">
+				<img
+					class="timezone-image"
+					data-timezone-field="#<?php echo esc_attr( $args['field_id'] ); ?>"
+					id="timezone-image-<?php echo absint( $this->timezonepicker_count ); ?>"
+					src="<?php echo plugins_url( 'images/gray-600.png', __FILE__ ); ?>"
+					usemap="#<?php echo esc_attr( $args['map_id'] ); ?>"
+					width="600"
+				/>
 				<img class="timezone-pin" src="<?php echo plugins_url( 'images/pin.png', __FILE__ ); ?>" />
-				<map name="timezone-map" id="timezone-map">
+				<map id="<?php echo esc_attr( $args['map_id'] ); ?>" name="<?php echo esc_attr( $args['map_id'] ); ?>">
 					<?php
 					foreach( $this->map_data() as $timezone_name => $timezone )
 					{

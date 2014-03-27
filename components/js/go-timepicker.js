@@ -49,12 +49,22 @@ var go_timepicker = {
 	 * Sets up timezone picker and associated events
 	 */
 	go_timepicker.timezone_picker = function() {
-		go_timepicker.$timezone_image = $( '#timezone-image' );
+		$( '#timezone-image-1' ).each( function() {
+			var $image = $( this );
+			var timezone_field = $image.data( 'timezone-field' );
+			$image.timezonePicker({
+				target: timezone_field,
+				fillColor: '55a0d3'
+			});
+		});
 
-		// Set up the picker to update target timezone list.
-		go_timepicker.$timezone_image.timezonePicker({
-			target: '#' + go_timepicker.base + '-timezone',
-			fillColor: '55a0d3'
+		$( '#timezone-image-2' ).each( function() {
+			var $image = $( this );
+			var timezone_field = $image.data( 'timezone-field' );
+			$image.timezonePicker({
+				target: timezone_field,
+				fillColor: '55a0d3'
+			});
 		});
 
 		// Show/hide map
@@ -62,21 +72,24 @@ var go_timepicker = {
 			e.preventDefault();
 			var $button = $( this );
 
-			go_timepicker.tz_button_text = 'Show Map' == $button.text() ? 'Hide Map' : 'Show Map';
+			go_timepicker.tz_button_text = 'Show map' == $button.text() ? 'Hide map' : 'Show map';
 
 			$button.text( go_timepicker.tz_button_text );
 
-			$( '#timezone-picker' ).toggle();
+			var $map = $button.next();
+			$map.toggle();
 
-			var current_timezone = $( '#' + go_timepicker.base + '-timezone' ).val();
+			var $timezone_image = $map.find( 'img.timezone-image' );
+
+			var current_timezone = $( $timezone_image.data( 'timezone-field' ) ).val();
 
 			if ( current_timezone ) {
 				// if they already have a timezone set, auto-select it
-				go_timepicker.$timezone_image.timezonePicker( 'updateTimezone', current_timezone );
+				$timezone_image.timezonePicker( 'updateTimezone', current_timezone );
 			} else if( ! go_timepicker.timezone_detected ) {//end if
 				// We have to wait for the map to be shown
 				// Auto-detect geolocation. (will prompt user)
-				go_timepicker.$timezone_image.timezonePicker( 'detectLocation' );
+				$timezone_image.timezonePicker( 'detectLocation' );
 
 				// Don't reset the damn location each time they open the map!
 				go_timepicker.timezone_detected = true;
