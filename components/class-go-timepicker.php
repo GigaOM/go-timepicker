@@ -169,6 +169,8 @@ class GO_Timepicker
 			'show_map' => TRUE,
 			'show_selector' => TRUE,
 			'value' => FALSE,
+			'before_select' => '', // before and after should both contain pre-sanitized html strings
+			'after_select' => '',
 		);
 		$args = wp_parse_args( $args, $defaults );
 
@@ -180,6 +182,9 @@ class GO_Timepicker
 			?>
 			<div id="timezone-selector">
 				<label for="<?php echo $field_id; ?>">Timezone</label>
+
+				<?php echo $args['before_select']; ?>
+
 				<select id="<?php echo $field_id; ?>" name="<?php echo esc_attr( $args['field_name'] ); ?>">
 					<option value="">- None -</option>
 					<?php
@@ -191,6 +196,9 @@ class GO_Timepicker
 					} // end foreach
 					?>
 				</select>
+
+				<?php echo $args['after_select']; ?>
+
 			</div>
 			<?php
 		}//end if
