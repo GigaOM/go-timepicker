@@ -4,7 +4,7 @@ class GO_Timepicker
 {
 	public $id_base = 'go-timepicker';
 
-	private $map_data;
+	private $map_data = array();
 	private $offset_tz_map = array(
 		-11 => 'Pacific/Midway',
 		-10 => 'Pacific/Honolulu',
@@ -169,6 +169,7 @@ class GO_Timepicker
 			'field_id' => $this->id_base . '-timezone-' . $this->timezonepicker_count,
 			'field_name' => 'timezone',
 			'map_id' => $this->id_base . '-map-' . $this->timezonepicker_count,
+			'map_size' => 'large',
 			'show_map' => TRUE,
 			'show_selector' => TRUE,
 			'value' => FALSE,
@@ -190,7 +191,7 @@ class GO_Timepicker
 				<select id="<?php echo esc_attr( $args['field_id'] ); ?>" name="<?php echo esc_attr( $args['field_name'] ); ?>">
 					<option value="">- None -</option>
 					<?php
-					foreach( $this->map_data() as $timezone_name => $timezone )
+					foreach( $this->map_data( $args['map_size'] ) as $timezone_name => $timezone )
 					{
 						?>
 						<option value="<?php echo esc_attr( $timezone_name );?>" <?php selected( $args['value'], $timezone_name ); ?>><?php echo esc_html( $timezone_name );?></option>
@@ -215,7 +216,7 @@ class GO_Timepicker
 		{
 			// if we are going to show this, we'll need the associated JS
 			$this->enqueue_scripts();
-
+			$map_size_int = $this->map_size_int( $args['map_size'] );
 			?>
 			<button class="button show-tz-map" value="Show map">Show map</button>
 			<div class="<?php echo esc_attr( $this->id_base ); ?>-map">
@@ -223,14 +224,14 @@ class GO_Timepicker
 					class="timezone-image"
 					data-timezone-field="#<?php echo esc_attr( $args['field_id'] ); ?>"
 					id="timezone-image-<?php echo absint( $this->timezonepicker_count ); ?>"
-					src="<?php echo plugins_url( 'images/gray-600.png', __FILE__ ); ?>"
+					src="<?php echo plugins_url( 'images/gray-' . $map_size_int . '.png', __FILE__ ); ?>"
 					usemap="#<?php echo esc_attr( $args['map_id'] ); ?>"
-					width="600"
+					width="<?php echo $map_size_int; ?>"
 				/>
 				<img class="timezone-pin" src="<?php echo plugins_url( 'images/pin.png', __FILE__ ); ?>" />
 				<map id="<?php echo esc_attr( $args['map_id'] ); ?>" name="<?php echo esc_attr( $args['map_id'] ); ?>">
 					<?php
-					foreach( $this->map_data() as $timezone_name => $timezone )
+					foreach( $this->map_data( $args['map_size'] ) as $timezone_name => $timezone )
 					{
 						foreach ( $timezone['polys'] as $coords )
 						{
@@ -252,18 +253,20 @@ class GO_Timepicker
 	/**
 	 * get the map data
 	 *
+	 * @param $size string the string based name for size (currently only supports large [600] and small [300])
 	 * @return array of map data
 	 */
-	private function map_data()
+	private function map_data( $size )
 	{
-		if ( ! $this->map_data )
+		if ( ! isset( $this->map_data[ $size ] ) )
 		{
-			$json_data = file_get_contents( __DIR__ . '/js/external/data/timepicker.json' );
+			$size_int = $this->map_size_int( $size );
+			$json_data = file_get_contents( __DIR__ . '/js/external/data/timepicker-' . $size_int . '.json' );
 
-			$this->map_data = json_decode( $json_data, true );
+			$this->map_data[ $size ] = json_decode( $json_data, true );
 		}//end if
 
-		return $this->map_data;
+		return $this->map_data[ $size ];
 	}// end map_data
 
 	/**
@@ -278,6 +281,21 @@ class GO_Timepicker
 
 		return $this->offset_tz_map[ $offset ];
 	}//end offset_to_tz
+
+	/**
+	 * translate name based map size to an width integer
+	 *
+	 * @param $size string the string based name for size (currently only supports large [600] and small [300])
+	 */
+	private function map_size_int( $size )
+	{
+		if ( 'small' == $size )
+		{
+			return 300;
+		}// end if
+
+		return 600;
+	}// end if
 }// end class
 
 /**
