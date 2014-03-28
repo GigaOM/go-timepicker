@@ -49,16 +49,7 @@ var go_timepicker = {
 	 * Sets up timezone picker and associated events
 	 */
 	go_timepicker.timezone_picker = function() {
-		$( '#timezone-image-1' ).each( function() {
-			var $image = $( this );
-			var timezone_field = $image.data( 'timezone-field' );
-			$image.timezonePicker({
-				target: timezone_field,
-				fillColor: '55a0d3'
-			});
-		});
-
-		$( '#timezone-image-2' ).each( function() {
+		$( '.timezone-image' ).each( function() {
 			var $image = $( this );
 			var timezone_field = $image.data( 'timezone-field' );
 			$image.timezonePicker({
