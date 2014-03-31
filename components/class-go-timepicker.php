@@ -173,6 +173,7 @@ class GO_Timepicker
 			'map_image' => FALSE,
 			'map_data' => FALSE,
 			'show_map' => TRUE,
+			'show_map_button' => TRUE,
 			'show_selector' => TRUE,
 			'value' => FALSE,
 			'before_select' => '', // before and after should both contain pre-sanitized html strings
@@ -192,11 +193,11 @@ class GO_Timepicker
 		{
 			?>
 			<div class="timezone-selector">
-				<label for="<?php echo esc_attr( $args['field_id'] ); ?>">Timezone</label>
+				<label for="<?php echo esc_attr( $args['field_id'] ); ?>">Time zone</label>
 
 				<?php echo $args['before_select']; ?>
 
-				<select id="<?php echo esc_attr( $args['field_id'] ); ?>" name="<?php echo esc_attr( $args['field_name'] ); ?>">
+				<select id="<?php echo esc_attr( $args['field_id'] ); ?>" name="<?php echo esc_attr( $args['field_name'] ); ?>" class="timezone-picker-select">
 					<option value="">- None -</option>
 					<?php
 					foreach( $map_data as $timezone_name => $timezone )
@@ -227,9 +228,15 @@ class GO_Timepicker
 
 			$args['map_image'] = $args['map_image'] ?: plugins_url( 'images/gray-' . $args['map_size'] . '.png', __FILE__ );
 
+			if ( $args['show_map_button'] )
+			{
+				?>
+				<button class="button show-tz-map" value="Show map">Show map</button>
+				<?php
+			}//end if
+
 			?>
-			<button class="button show-tz-map" value="Show map">Show map</button>
-			<div class="<?php echo esc_attr( $this->id_base ); ?>-map">
+			<div class="<?php echo esc_attr( $this->id_base ); ?>-map<?php echo ! $args['show_map_button'] ? ' show' : ''; ?>">
 				<img
 					class="timezone-image"
 					data-timezone-field="#<?php echo esc_attr( $args['field_id'] ); ?>"

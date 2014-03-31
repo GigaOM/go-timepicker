@@ -46,50 +46,97 @@ var go_timepicker = {
 	};
 
 	/**
-	 * Sets up timezone picker and associated events
+	 * toggle the map
 	 */
-	go_timepicker.timezone_picker = function() {
-		$( '.timezone-image' ).each( function() {
-			var $image = $( this );
-			var timezone_field = $image.data( 'timezone-field' );
-			$image.timezonePicker({
-				target: timezone_field,
-				fillColor: '55a0d3'
-			});
-		});
+	go_timepicker.toggle_timezone_map = function( e ) {
+		e.preventDefault();
+		var $button = $( this );
 
-		// Show/hide map
-		$( document ).on( 'click', '.show-tz-map', function( e ) {
-			e.preventDefault();
-			var $button = $( this );
+		var $map = $button.next();
+		var $timezone_image = $map.find( 'img.timezone-image' );
 
-			go_timepicker.tz_button_text = 'Show map' == $button.text() ? 'Hide map' : 'Show map';
+		var hiding = 'Hide map' == $button.text() ? true : false;
+		if ( hiding ) {
+			$button.text( 'Show map' );
+			$button.removeClass( 'visible' );
+		}//end if
+		else
+		{
+			$button.text( 'Hide map' );
+			$( '.show-tz-map.visible' ).trigger( 'click' );
+			$button.addClass( 'visible' );
+		}// end else
 
-			$button.text( go_timepicker.tz_button_text );
+		go_timepicker.timezone_map( $timezone_image );
 
-			var $map = $button.next();
-			$map.toggle();
+		$map.toggle();
 
-			var $timezone_image = $map.find( 'img.timezone-image' );
+		var current_timezone = go_timepicker.$timezone_select.val();
+		var $area = $map.find( "area[data-timezone='" + current_timezone + "']" );
+		go_timepicker.move_pin( $area );
+	};
 
-			var current_timezone = $( $timezone_image.data( 'timezone-field' ) ).val();
+	/**
+	 * move the pin to a new area
+	 */
+	go_timepicker.move_pin = function ( $area ) {
+		var $pin = $area.closest( '.go-timepicker-map' ).find( '.timezone-pin' );
+		$pin.css('display', 'block');
 
-			if ( current_timezone ) {
-				// if they already have a timezone set, auto-select it
-				$timezone_image.timezonePicker( 'updateTimezone', current_timezone );
-			} else if( ! go_timepicker.timezone_detected ) {//end if
-				// We have to wait for the map to be shown
-				// Auto-detect geolocation. (will prompt user)
-				$timezone_image.timezonePicker( 'detectLocation' );
+		var pinCoords = $area.data( 'pin' ).split( ',' );
+		var pinWidth = parseInt( $pin.width() / 2 );
+		var pinHeight = $pin.height();
 
-				// Don't reset the damn location each time they open the map!
-				go_timepicker.timezone_detected = true;
-			}//end else if
+		$pin.css({
+			position: 'absolute',
+			left: ( pinCoords[0] - pinWidth ) + 'px',
+			top: ( pinCoords[1] - pinHeight ) + 'px'
 		});
 	};
 
+	/**
+	 * setup a timezone picker map
+	 */
+	go_timepicker.timezone_map = function( $timezone_image ) {
+		var current_timezone = go_timepicker.$timezone_select.val();
+
+		// if it has already been loaded, don't bother reloading the timezone picker
+		if ( $timezone_image.hasClass( 'loaded' ) ) {
+			$timezone_image.timezonePicker( 'updateTimezone', current_timezone );
+			return;
+		}// end if
+
+		$timezone_image.timezonePicker({
+			target: '.timezone-picker-select',
+			fillColor: '55a0d3'
+		} );
+		$timezone_image.addClass( 'loaded' );
+
+		if ( current_timezone ) {
+			// if they already have a timezone set, auto-select it
+			$timezone_image.timezonePicker( 'updateTimezone', current_timezone );
+		} else if ( ! go_timepicker.timezone_detected ) {//end if
+			// We have to wait for the map to be shown
+			// Auto-detect geolocation. (will prompt user)
+			$timezone_image.timezonePicker( 'detectLocation' );
+
+			// Don't reset the damn location each time they open the map!
+			go_timepicker.timezone_detected = true;
+		}//end else if
+	};
+
 	$( function() {
-		go_timepicker.timezone_picker();
+		// doing direct binds because timezonePicker is using triggerHandler (which does not propagate)
+		$( 'area' ).bind( 'click', function() {
+			go_timepicker.move_pin( $( this ) );
+		} );
+
+		$( document ).on( 'click', '.show-tz-map', go_timepicker.toggle_timezone_map );
+
+		go_timepicker.$timezone_select = $( '.timezone-picker-select' );
+
+		go_timepicker.timezone_map( $( '.go-timepicker-map.show img.timezone-image' ) );
+
 		go_timepicker.date_picker();
 	});
 })( jQuery );

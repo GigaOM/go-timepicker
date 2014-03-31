@@ -4,6 +4,10 @@
 	text-align: center;
 }
 
+.go-timepicker-map.show {
+	display: block;
+}
+
 .go-timepicker-map div, map {
 	margin: auto;
 }
