@@ -60,7 +60,7 @@ class GO_Timepicker
 	{
 		wp_register_script(
 			'jquery-maphilight',
-			plugins_url( 'js/external/jquery.maphilight.min.js', __FILE__ ),
+			plugins_url( 'js/lib/external/jquery.maphilight.js', __FILE__ ),
 			array( 'jquery' ),
 			$this->version,
 			TRUE
@@ -68,7 +68,7 @@ class GO_Timepicker
 
 		wp_register_script(
 			'jquery-timezone-picker',
-			plugins_url( 'js/external/jquery.timezone-picker.min.js', __FILE__ ),
+			plugins_url( 'js/lib/external/jquery.timezone-picker.js', __FILE__ ),
 			array( 'jquery-maphilight' ),
 			$this->version,
 			TRUE
@@ -76,7 +76,7 @@ class GO_Timepicker
 
 		wp_register_script(
 			'jquery-ui-slideraccess',
-			plugins_url( 'js/external/timepicker-addon/jquery-ui-sliderAccess.min.js', __FILE__ ),
+			plugins_url( 'js/lib/external/timepicker-addon/jquery-ui-sliderAccess.min.js', __FILE__ ),
 			array( 'jquery-ui-core' ),
 			$this->version,
 			TRUE
@@ -91,7 +91,7 @@ class GO_Timepicker
 
 		wp_register_script(
 			'jquery-ui-timepicker-addon',
-			plugins_url( 'js/external/timepicker-addon/jquery-ui-timepicker-addon.min.js', __FILE__ ),
+			plugins_url( 'js/lib/external/timepicker-addon/jquery-ui-timepicker-addon.min.js', __FILE__ ),
 			array( 'jquery-ui-datepicker', 'jquery-ui-slideraccess' ),
 			$this->version,
 			TRUE
@@ -99,14 +99,14 @@ class GO_Timepicker
 
 		wp_register_style(
 			'jquery-ui-timepicker-addon',
-			plugins_url( 'js/external/timepicker-addon/jquery-ui-timepicker-addon.css', __FILE__ ),
+			plugins_url( 'js/lib/external/timepicker-addon/jquery-ui-timepicker-addon.css', __FILE__ ),
 			array( 'jquery-ui-smoothness'),
 			$this->version
 		);
 
 		wp_register_script(
 			$this->id_base,
-			plugins_url( 'js/go-timepicker.js', __FILE__ ),
+			plugins_url( 'js/lib/go-timepicker.js', __FILE__ ),
 			array( 'jquery-timezone-picker', 'jquery-ui-timepicker-addon' ),
 			$this->version,
 			TRUE
@@ -287,7 +287,7 @@ class GO_Timepicker
 			}//end if
 			else
 			{
-				$json_data = file_get_contents( __DIR__ . '/js/external/data/timepicker-' . absint( $size ) . '.json' );
+				$json_data = file_get_contents( __DIR__ . '/js/data/timepicker-' . absint( $size ) . '.json' );
 				$this->map_data[ $size ] = json_decode( $json_data, TRUE );
 			}//end else
 		}//end if

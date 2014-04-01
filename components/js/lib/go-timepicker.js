@@ -108,7 +108,7 @@ var go_timepicker = {
 
 		$timezone_image.timezonePicker( {
 			target: '.timezone-picker-select',
-			fillColor: '55a0d3'
+			maphilight: false
 		} );
 		$timezone_image.addClass( 'loaded' );
 
@@ -116,6 +116,23 @@ var go_timepicker = {
 			// if they already have a timezone set, auto-select it
 			$timezone_image.timezonePicker( 'updateTimezone', current_timezone );
 		}
+
+		$timezone_image.timezonePicker( 'resize' );
+
+		// manually set the width attribute so maphilight gets a correct value
+		$timezone_image.attr( 'width', parseInt( $timezone_image.css('width') ) );
+
+		// we are doing the maphighlight here so it is after the image is resized
+		// and will render properly
+		$timezone_image.maphilight( {
+			fade: false,
+			stroke: true,
+			strokeColor: 'FFFFFF',
+			strokeOpacity: 0.4,
+			fillColor: '55a0d3',
+			fillOpacity: 0.4,
+			groupBy: 'data-offset'
+		});
 	};
 
 	$( function() {
