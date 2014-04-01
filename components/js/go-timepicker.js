@@ -77,10 +77,10 @@ var go_timepicker = {
 	};
 
 	/**
-	 * move the pin to a new area
+	 * move the pins to a new area
 	 */
 	go_timepicker.move_pin = function ( $area ) {
-		var $pin = $area.closest( '.go-timepicker-map' ).find( '.timezone-pin' );
+		var $pin = $( '.timezone-pin' );
 		$pin.css('display', 'block');
 
 		var pinCoords = $area.data( 'pin' ).split( ',' );
@@ -106,7 +106,7 @@ var go_timepicker = {
 			return;
 		}// end if
 
-		$timezone_image.timezonePicker({
+		$timezone_image.timezonePicker( {
 			target: '.timezone-picker-select',
 			fillColor: '55a0d3'
 		} );
@@ -115,22 +115,10 @@ var go_timepicker = {
 		if ( current_timezone ) {
 			// if they already have a timezone set, auto-select it
 			$timezone_image.timezonePicker( 'updateTimezone', current_timezone );
-		} else if ( ! go_timepicker.timezone_detected ) {//end if
-			// We have to wait for the map to be shown
-			// Auto-detect geolocation. (will prompt user)
-			$timezone_image.timezonePicker( 'detectLocation' );
-
-			// Don't reset the damn location each time they open the map!
-			go_timepicker.timezone_detected = true;
-		}//end else if
+		}
 	};
 
 	$( function() {
-		// doing direct binds because timezonePicker is using triggerHandler (which does not propagate)
-		$( 'area' ).bind( 'click', function() {
-			go_timepicker.move_pin( $( this ) );
-		} );
-
 		$( document ).on( 'click', '.show-tz-map', go_timepicker.toggle_timezone_map );
 
 		go_timepicker.$timezone_select = $( '.timezone-picker-select' );
@@ -139,6 +127,10 @@ var go_timepicker = {
 			go_timepicker.timezone_map( $( this ) );
 		} );
 
+		// doing direct binds because timezonePicker is using triggerHandler (which does not propagate)
+		$( 'area' ).bind( 'click', function() {
+			go_timepicker.move_pin( $( this ) );
+		} );
 
 		go_timepicker.date_picker();
 	});
