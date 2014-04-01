@@ -135,7 +135,10 @@ var go_timepicker = {
 
 		go_timepicker.$timezone_select = $( '.timezone-picker-select' );
 
-		go_timepicker.timezone_map( $( '.go-timepicker-map.show img.timezone-image' ) );
+		$( '.go-timepicker-map.show img.timezone-image' ).each( function () {
+			go_timepicker.timezone_map( $( this ) );
+		} );
+
 
 		go_timepicker.date_picker();
 	});
