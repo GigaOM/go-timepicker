@@ -182,6 +182,7 @@ class GO_Timepicker
 		$args = wp_parse_args( $args, $defaults );
 
 		$args['value'] = timezone_name_from_abbr( $args['value'] );
+		$button_shown = FALSE;
 
 		$map_data = $this->map_data( $args['map_size'], $args['map_data'] );
 		if ( ! $map_data )
@@ -189,6 +190,9 @@ class GO_Timepicker
 			return;
 		}//end if
 
+		?>
+		<div class="<?php echo esc_attr( $this->id_base ); ?>">
+		<?php
 		if ( $args['show_selector'] )
 		{
 			?>
@@ -209,8 +213,17 @@ class GO_Timepicker
 					?>
 				</select>
 
-				<?php echo $args['after_select']; ?>
+				<?php
+				echo $args['after_select'];
 
+				if ( $args['show_map'] && $args['show_map_button'] )
+				{
+					$button_shown = TRUE;
+					?>
+					<button class="button show-tz-map" value="Show map">Show map</button>
+					<?php
+				}//end if
+				?>
 			</div>
 			<?php
 		}//end if
@@ -228,7 +241,7 @@ class GO_Timepicker
 
 			$args['map_image'] = $args['map_image'] ?: plugins_url( 'images/gray-' . $args['map_size'] . '.png', __FILE__ );
 
-			if ( $args['show_map_button'] )
+			if ( ! $button_shown && $args['show_map_button'] )
 			{
 				?>
 				<button class="button show-tz-map" value="Show map">Show map</button>
@@ -265,6 +278,9 @@ class GO_Timepicker
 			</div>
 			<?php
 		}//end if
+		?>
+		</div>
+		<?php
 	}// end timezone_picker
 
 	/**
