@@ -1,6 +1,7 @@
 var go_timepicker = {
 	base: go_timepicker_base,
-	timezone_detected: false
+	timezone_detected: false,
+	timezone_detect: false
 };
 
 ( function( $ ) {
@@ -70,18 +71,13 @@ var go_timepicker = {
 		go_timepicker.timezone_map( $timezone_image );
 
 		$map.toggle();
-
-		var current_timezone = go_timepicker.$timezone_select.val();
-		var $area = $map.find( "area[data-timezone='" + current_timezone + "']" );
-		go_timepicker.move_pin( $area );
 	};
 
 	/**
 	 * move the pins to a new area
 	 */
 	go_timepicker.move_pin = function ( $area ) {
-		var $pin = $( '.timezone-pin' );
-		$pin.css('display', 'block');
+		var $pin = $area.closest( '.go-timepicker' ).find( '.timezone-pin' );
 
 		var pinCoords = $area.data( 'pin' ).split( ',' );
 		var pinWidth = parseInt( $pin.width() / 2, 10 );
@@ -90,8 +86,11 @@ var go_timepicker = {
 		$pin.css({
 			position: 'absolute',
 			left: ( pinCoords[0] - pinWidth ) + 'px',
-			top: ( pinCoords[1] - pinHeight ) + 'px'
+			top: ( pinCoords[1] - pinHeight ) + 'px',
+			display: 'block'
 		});
+
+		$pin.trigger( 'go-timepicker-moved-pin' );
 	};
 
 	/**
@@ -112,10 +111,20 @@ var go_timepicker = {
 		} );
 		$timezone_image.addClass( 'loaded' );
 
-		if ( current_timezone ) {
-			// if they already have a timezone set, auto-select it
-			$timezone_image.timezonePicker( 'updateTimezone', current_timezone );
+		if ( ! current_timezone ) {
+			if ( go_timepicker.timezone_detect && ! go_timepicker.timezone_detected ) {//end if
+				// Auto-detect geolocation. (will prompt user)
+				$timezone_image.timezonePicker( 'detectLocation' );
+
+				// Don't reset the damn location each time they open the map!
+				go_timepicker.timezone_detected = true;
+			}//end else if
+			else {
+				current_timezone = go_timepicker.default_timezone();
+			}
 		}
+
+		$timezone_image.timezonePicker( 'updateTimezone', current_timezone );
 
 		$timezone_image.timezonePicker( 'resize' );
 
@@ -135,14 +144,62 @@ var go_timepicker = {
 		});
 	};
 
+	/**
+	 * get a default timezone
+	 *
+	 * Note: due to daylight savings time (and other subtle factors) this is way less
+	 *  accurate than geolocation, but will not prompt the user, so, pick your poison
+	 */
+	go_timepicker.default_timezone = function()
+	{
+		var default_timezones = {
+			'-11': 'Pacific/Midway',
+			'-10': 'Pacific/Honolulu',
+			 '-9': 'America/Anchorage',
+			 '-8': 'America/Los_Angeles',
+			 '-7': 'America/Denver',
+			 '-6': 'America/Chicago',
+			 '-5': 'America/New_York',
+			 '-4': 'Atlantic/Bermuda',
+			 '-3': 'America/Godthab',
+			 '-2': 'America/Noronha',
+			 '-1': 'Atlantic/Cape_Verde',
+			  '0': 'Europe/London',
+			  '1': 'CET',
+			  '2': 'EET',
+			  '3': 'Asia/Baghdad',
+			  '4': 'Europe/Moscow',
+			  '5': 'Indian/Maldives',
+			  '6': 'Asia/Almaty',
+			  '7': 'Asia/Bangkok',
+			  '8': 'Asia/Shanghai',
+			  '9': 'Asia/Tokyo',
+			 '10': 'Australia/Sydney',
+			 '11': 'Pacific/Guadalcanal',
+			 '12': 'Pacific/Wake',
+			 '13': 'Pacific/Enderbury',
+			 '14': 'Pacific/Kiritimati',
+		}
+
+		var d = new Date();
+		var offset = d.getTimezoneOffset();
+		offset = parseInt( ( ( offset * -1 ) / 60 ), 10 );
+
+		return default_timezones[ offset ];
+	};
+
 	$( function() {
 		$( document ).on( 'click', '.show-tz-map', go_timepicker.toggle_timezone_map );
 
 		go_timepicker.$timezone_select = $( '.timezone-picker-select' );
 
-		$( '.go-timepicker-map.show img.timezone-image' ).each( function () {
-			go_timepicker.timezone_map( $( this ) );
+		// do this with an event so other plugins can hook into it
+		$( document ).on( 'go-timepicker-show', function() {
+			$( '.go-timepicker-map.show img.timezone-image:visible' ).each( function () {
+				go_timepicker.timezone_map( $( this ) );
+			} );
 		} );
+		$( document ).trigger( 'go-timepicker-show' );
 
 		// doing direct binds because timezonePicker is using triggerHandler (which does not propagate)
 		$( 'area' ).bind( 'click', function() {
