@@ -258,7 +258,7 @@ class GO_Timepicker
 					usemap="#<?php echo esc_attr( $args['map_id'] ); ?>"
 					width="<?php echo absint( $args['map_size'] ); ?>"
 				/>
-				<img class="timezone-pin" src="<?php echo plugins_url( 'images/pin.png', __FILE__ ); ?>" />
+				<img class="timezone-pin" src="<?php echo plugins_url( 'images/pin.png', __FILE__ ); ?>" style="width: 13px; height:21px;" />
 				<map id="<?php echo esc_attr( $args['map_id'] ); ?>" name="<?php echo esc_attr( $args['map_id'] ); ?>">
 					<?php
 					foreach( $map_data as $timezone_name => $timezone )

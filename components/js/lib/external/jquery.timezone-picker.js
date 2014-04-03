@@ -1,5 +1,7 @@
 (function($) {
 
+// gigaom zbt: fixed a couple typos, pull requested to origin: https://github.com/quicksketch/timezonepicker/pull/12
+
 // We only support a single instance per call, so these variables are available
 // for all subsequent calls.
 var methods = {};
@@ -44,6 +46,7 @@ methods.init = function(initOpts) {
     $(mapElement).find('area').click(function() {
       var areaElement = this;
       // Enable the pin adjustment.
+      /* gigaom zbt: we have our own happy pin movement now
       if ($pin) {
         $pin.css('display', 'block');
         var pinCoords = $(areaElement).attr('data-pin').split(',');
@@ -56,6 +59,7 @@ methods.init = function(initOpts) {
           top: (pinCoords[1] - pinHeight) + 'px'
         });
       }
+      */
 
       var timezoneName = $(areaElement).attr('data-timezone');
       var countryName = $(areaElement).attr('data-country');
@@ -132,7 +136,8 @@ methods.init = function(initOpts) {
  */
 methods.updateTimezone = function(newTimezone) {
   selectedTimezone = newTimezone;
-  $pin.css('display', 'none');
+  // gigaom zbt: don't hide the pin when we move it
+  //$pin.css('display', 'none');
   $(mapElement).find('area').each(function(m, areaElement) {
     if (areaElement.getAttribute('data-timezone') === selectedTimezone) {
       $(areaElement).triggerHandler('click');
@@ -244,6 +249,7 @@ methods.detectLocation = function(detectOpts) {
  * the current dimensions of the image.
  */
 methods.resize = function() {
+  // gigaom zbt: reworked function for improved efficiency, pull requested to parent here: https://github.com/quicksketch/timezonepicker/pull/13
   var rescale = imgElement.width/imgElement.getAttribute('width');
 
   // Adjust the image size.
