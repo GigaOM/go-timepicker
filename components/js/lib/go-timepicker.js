@@ -211,8 +211,9 @@ var go_timepicker = {
 
 // adding to the date object a new method to allow us to get a
 // consistent time zone offset regardless of daylight savings time
+// http://stackoverflow.com/questions/11887934/check-if-daylight-saving-time-is-in-effect-and-if-it-is-for-how-many-hours
 Date.prototype.stdTimezoneOffset = function() {
-    var jan = new Date(this.getFullYear(), 0, 1);
-    var jul = new Date(this.getFullYear(), 6, 1);
-    return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
+    var jan = new Date( this.getFullYear(), 0, 1 );
+    var jul = new Date( this.getFullYear(), 6, 1 );
+    return Math.max( jan.getTimezoneOffset(), jul.getTimezoneOffset() );
 }
