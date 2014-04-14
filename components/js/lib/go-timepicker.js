@@ -147,8 +147,7 @@ var go_timepicker = {
 	/**
 	 * get a default timezone
 	 *
-	 * Note: due to daylight savings time (and other subtle factors) this is way less
-	 *  accurate than geolocation, but will not prompt the user, so, pick your poison
+	 * Note: this is way less accurate than geolocation, but will not prompt the user, so, pick your poison
 	 */
 	go_timepicker.default_timezone = function()
 	{
@@ -182,7 +181,7 @@ var go_timepicker = {
 		}
 
 		var d = new Date();
-		var offset = d.getTimezoneOffset();
+		var offset = d.stdTimezoneOffset();
 		offset = parseInt( ( ( offset * -1 ) / 60 ), 10 );
 
 		return default_timezones[ offset ];
@@ -209,3 +208,11 @@ var go_timepicker = {
 		go_timepicker.date_picker();
 	});
 })( jQuery );
+
+// adding to the date object a new method to allow us to get a
+// consistent time zone offset regardless of daylight savings time
+Date.prototype.stdTimezoneOffset = function() {
+    var jan = new Date(this.getFullYear(), 0, 1);
+    var jul = new Date(this.getFullYear(), 6, 1);
+    return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
+}
