@@ -100,7 +100,7 @@ class GO_Timepicker
 		wp_register_style(
 			'jquery-ui-timepicker-addon',
 			plugins_url( 'js/lib/external/timepicker-addon/jquery-ui-timepicker-addon.css', __FILE__ ),
-			array( 'jquery-ui-smoothness'),
+			array( 'jquery-ui-smoothness' ),
 			$this->version
 		);
 
@@ -204,7 +204,7 @@ class GO_Timepicker
 				<select id="<?php echo esc_attr( $args['field_id'] ); ?>" name="<?php echo esc_attr( $args['field_name'] ); ?>" class="timezone-picker-select">
 					<option value="">- None -</option>
 					<?php
-					foreach( $map_data as $timezone_name => $timezone )
+					foreach ( $map_data as $timezone_name => $timezone )
 					{
 						?>
 						<option value="<?php echo esc_attr( $timezone_name );?>" <?php selected( $args['value'], $timezone_name ); ?>><?php echo esc_html( $timezone_name );?></option>
@@ -261,7 +261,7 @@ class GO_Timepicker
 				<img class="timezone-pin" src="<?php echo plugins_url( 'images/pin.png', __FILE__ ); ?>" style="width: 13px; height:21px;" />
 				<map id="<?php echo esc_attr( $args['map_id'] ); ?>" name="<?php echo esc_attr( $args['map_id'] ); ?>">
 					<?php
-					foreach( $map_data as $timezone_name => $timezone )
+					foreach ( $map_data as $timezone_name => $timezone )
 					{
 						foreach ( $timezone['polys'] as $coords )
 						{
