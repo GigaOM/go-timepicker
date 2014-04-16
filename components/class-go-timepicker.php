@@ -5,34 +5,6 @@ class GO_Timepicker
 	public $id_base = 'go-timepicker';
 
 	private $map_data = array();
-	private $offset_tz_map = array(
-		-11 => 'Pacific/Midway',
-		-10 => 'Pacific/Honolulu',
-		 -9 => 'America/Anchorage',
-		 -8 => 'America/Los_Angeles',
-		 -7 => 'America/Denver',
-		 -6 => 'America/Chicago',
-		 -5 => 'America/New_York',
-		 -4 => 'Atlantic/Bermuda',
-		 -3 => 'America/Godthab',
-		 -2 => 'America/Noronha',
-		 -1 => 'Atlantic/Cape_Verde',
-		  0 => 'Europe/London',
-		  1 => 'CET',
-		  2 => 'EET',
-		  3 => 'Asia/Baghdad',
-		  4 => 'Europe/Moscow',
-		  5 => 'Indian/Maldives',
-		  6 => 'Asia/Almaty',
-		  7 => 'Asia/Bangkok',
-		  8 => 'Asia/Shanghai',
-		  9 => 'Asia/Tokyo',
-		 10 => 'Australia/Sydney',
-		 11 => 'Pacific/Guadalcanal',
-		 12 => 'Pacific/Wake',
-		 13 => 'Pacific/Enderbury',
-		 14 => 'Pacific/Kiritimati',
-	);
 
 	private $timepicker_count = 0;
 	private $timezonepicker_count = 0;
@@ -48,9 +20,6 @@ class GO_Timepicker
 		// you can use the pickers either via singleton or these actions
 		add_action( 'go_timepicker_timezone_picker', array( $this, 'timezone_picker' ), 10, 1 );
 		add_action( 'go_timepicker_datetime_picker', array( $this, 'datetime_picker' ), 10, 1 );
-
-		// allow overriding of the default offset timezone mapping
-		$this->offset_tz_map = apply_filters( 'go_timepicker_offset_tz_map', $this->offset_tz_map );
 	}//end __construct
 
 	/**
@@ -310,19 +279,6 @@ class GO_Timepicker
 
 		return $this->map_data[ $size ];
 	}// end map_data
-
-	/**
-	 * Lookup a predefined common timezone based on offset
-	 */
-	private function offset_to_tz( $offset )
-	{
-		if ( ! isset( $this->offset_tz_map[ $offset ] ) )
-		{
-			$offset = 0;
-		}//end if
-
-		return $this->offset_tz_map[ $offset ];
-	}//end offset_to_tz
 }// end class
 
 /**

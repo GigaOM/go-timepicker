@@ -10,7 +10,7 @@ Utility plugin to add a date/time picker or timezone picker to an interface
 
 == Description ==
 
-Uses a combination of jQuery addons including maphighlight, Timezone Picker, and Timpicker Addon to present a nice UI for date/time and timezone selections.
+Uses a combination of jQuery addons including maphighlight, Timezone Picker, and Timepicker Addon to present a nice UI for date/time and timezone selections.
 
 === Links ===
 
@@ -18,7 +18,7 @@ Uses a combination of jQuery addons including maphighlight, Timezone Picker, and
 * [GitHub repo](https://github.com/GigaOM/go-timepicker)
 * [maphilight](http://davidlynch.org/projects/maphilight/docs/)
 * [Timezone Picker](http://timezonepicker.com)
-* [Timpicker Addon](https://github.com/trentrichardson/jQuery-Timepicker-Addon)
+* [Timepicker Addon](https://github.com/trentrichardson/jQuery-Timepicker-Addon)
 
 == Installation ==
 
