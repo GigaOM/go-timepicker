@@ -6,46 +6,56 @@ Utility plugin to add a date/time picker or timezone picker to an interface.  Th
 Usage
 -----
 
-Use this shortcode for a date/time picker (defaults shown):
-```
-do_action( 'go_timepicker_datetime_picker', array(
-	// id to use for the select
+Use this action for a date/time picker (defaults shown):
+```php
+$args = array(
 	'field_id' => 'go-timepicker-datetime-1',
-	'field_name' => 'timezone',
 	'field_name' => 'datetime',
-	// set this to be the contents fo the associated label tag
 	'label' => 'Date/time',
-	// value to default the date/time to
 	'value' => '',
-) );
+);
+do_action( 'go_timepicker_datetime_picker', $args );
 ```
 
-Use this shortcode for a timezone picker (defaults shown):
-```
-do_action( 'go_timepicker_timezone_picker', array(
-	// id to use for the select
+### Parameters:
+
+- `field_id` - id to use for the picker
+- `field_name`- name to use for the picker
+- `label` - the contents fo the associated label tag
+- `value` - value to default the date/time to
+
+Use this action for a timezone picker (defaults shown):
+```php
+$args = array(
 	'field_id' => 'go-timepicker-timezone-1',
-	// name to use for the select
 	'field_name' => 'timezone',
-	// id for map element
 	'map_id' => 'go-timepicker-map-1',
-	// size of the map, also supports 300 or 328, see "Hacking" for more details
 	'map_size' => 600,
-	// specify a URL to override the image used for the map
 	'map_image' => FALSE,
-	// should the map be shown?
 	'show_map' => TRUE,
-	// determines whether the map should be toggleable with a "Show Map" button
 	'show_map_button' => TRUE,
-	// show the timezone selector
 	'show_selector' => TRUE,
-	// value to default the timezone selector to
 	'value' => '',
-	// html to wrap the select
 	'before_select' => '',
 	'after_select' => '',
-) );
+);
+do_action( 'go_timepicker_timezone_picker', $args );
 ```
+
+### Parameters:
+
+- `field_id` - id to use for the picker
+- `field_name` - name to use for the picker
+- `map_id` - id for map element
+- `map_size` - size of the map, also supports 300 or 328, see "Hacking" for more details
+- `map_image` - specify a URL to override the image used for the map
+- `show_map` - should the map be shown?
+- `show_map_button` - determines whether the map should be toggleable with a "Show Map" button
+- `show_selector` - show the timezone selector
+- `value` - value to default the timezone selector to
+- `before_select` - html to put before the select
+- `after_select` - html to put after the select
+- `value` - value to default the date/time to
 
 Works With
 ----------
