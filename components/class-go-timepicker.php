@@ -284,7 +284,8 @@ class GO_Timepicker
 /**
  * Singleton
  *
- *@global GO_Timepicker $go_timepicker
+ * @global GO_Timepicker $go_timepicker
+ * @return GO_Timepicker
  */
 function go_timepicker()
 {
