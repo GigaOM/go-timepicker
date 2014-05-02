@@ -103,7 +103,7 @@ class GO_Timepicker
 	/**
 	 * output HTML for a date/time
 	 *
-	 * @param array of arguments
+	 * @param array $args of arguments
 	 */
 	public function datetime_picker( $args )
 	{
@@ -128,7 +128,7 @@ class GO_Timepicker
 	/**
 	 * output HTML for a timezone picker
 	 *
-	 * @param array of arguments
+	 * @param array $args of arguments
 	 */
 	public function timezone_picker( $args )
 	{
@@ -256,10 +256,10 @@ class GO_Timepicker
 	 * get the map data
 	 * to get additional map data, use: http://timezonepicker.com/json.php?w=300 and adjust the "w" parameter
 	 *
-	 * @param $size string the string based name for size
+	 * @param string $size the string based name for size
 	                       currently only supports 600, 300, and 328
 	                       - it's our plugin, it might as well support our arbitrary size needs
-	 * @param $data array (optional) if you pass data, it will cache that data for the given size
+	 * @param array $data (optional) if you pass data, it will cache that data for the given size
 	 * @return array of map data
 	 */
 	private function map_data( $size, $data = FALSE )
@@ -283,6 +283,9 @@ class GO_Timepicker
 
 /**
  * Singleton
+ *
+ * @global GO_Timepicker $go_timepicker
+ * @return GO_Timepicker
  */
 function go_timepicker()
 {
