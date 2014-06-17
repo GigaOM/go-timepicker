@@ -8,30 +8,42 @@ class GO_Timepicker
 
 	private $timepicker_count = 0;
 	private $timezonepicker_count = 0;
+	private $date_range_picker_count = 0;
 	private $version = 1;
+	private $resources_registered = FALSE;
+	private $resources_enqueued = FALSE;
 
 	/**
 	 * The constructor
 	 */
 	public function __construct()
 	{
-		add_action( 'init', array( $this, 'init' ) );
+		add_action( 'init', array( $this, 'register_resources' ) );
 
 		// you can use the pickers either via singleton or these actions
 		add_action( 'go_timepicker_timezone_picker', array( $this, 'timezone_picker' ), 10, 1 );
 		add_action( 'go_timepicker_datetime_picker', array( $this, 'datetime_picker' ), 10, 1 );
+		add_action( 'go_timepicker_date_range_picker', array( $this, 'datetime_picker' ), 10, 1 );
 	}//end __construct
 
 	/**
 	 * register the necessary scripts
 	 */
-	public function init()
+	public function register_resources()
 	{
+		if ( $this->resources_registered )
+		{
+			return;
+		}// end if
+		$this->resources_registered = TRUE;
+
+		$script_config = apply_filters( 'go-config', array( 'version' => 1 ), 'go-script-version' );
+
 		wp_register_script(
 			'jquery-maphilight',
 			plugins_url( 'js/lib/external/jquery.maphilight.js', __FILE__ ),
 			array( 'jquery' ),
-			$this->version,
+			$script_config['version'],
 			TRUE
 		);
 
@@ -39,7 +51,7 @@ class GO_Timepicker
 			'jquery-timezone-picker',
 			plugins_url( 'js/lib/external/jquery.timezone-picker.js', __FILE__ ),
 			array( 'jquery-maphilight' ),
-			$this->version,
+			$script_config['version'],
 			TRUE
 		);
 
@@ -47,7 +59,7 @@ class GO_Timepicker
 			'jquery-ui-slideraccess',
 			plugins_url( 'js/lib/external/timepicker-addon/jquery-ui-sliderAccess.min.js', __FILE__ ),
 			array( 'jquery-ui-core' ),
-			$this->version,
+			$script_config['version'],
 			TRUE
 		);
 
@@ -62,7 +74,7 @@ class GO_Timepicker
 			'jquery-ui-timepicker-addon',
 			plugins_url( 'js/lib/external/timepicker-addon/jquery-ui-timepicker-addon.min.js', __FILE__ ),
 			array( 'jquery-ui-datepicker', 'jquery-ui-slideraccess' ),
-			$this->version,
+			$script_config['version'],
 			TRUE
 		);
 
@@ -70,14 +82,14 @@ class GO_Timepicker
 			'jquery-ui-timepicker-addon',
 			plugins_url( 'js/lib/external/timepicker-addon/jquery-ui-timepicker-addon.css', __FILE__ ),
 			array( 'jquery-ui-smoothness' ),
-			$this->version
+			$script_config['version']
 		);
 
 		wp_register_script(
 			$this->id_base,
 			plugins_url( 'js/lib/go-timepicker.js', __FILE__ ),
 			array( 'jquery-timezone-picker', 'jquery-ui-timepicker-addon' ),
-			$this->version,
+			$script_config['version'],
 			TRUE
 		);
 
@@ -85,15 +97,54 @@ class GO_Timepicker
 			$this->id_base,
 			plugins_url( 'css/go-timepicker.css', __FILE__ ),
 			array( 'jquery-ui-timepicker-addon' ),
-			$this->version
+			$script_config['version']
 		);
-	}//end init
+
+		wp_register_style(
+			'bootstrap-daterangepicker',
+			plugins_url( 'js/lib/external/bootstrap-daterangepicker/daterangepicker-bs3.css', __FILE__ ),
+			array(),
+			$script_config['version']
+		);
+
+		wp_register_script(
+			'moment',
+			plugins_url( 'js/lib/external/moment.min.js', __FILE__ ),
+			array(),
+			$script_config['version'],
+			TRUE
+		);
+
+		// fiscal quarter momentjs plugin
+		wp_register_script(
+			'moment-fquarter',
+			plugins_url( 'js/lib/external/moment-fquarter.min.js', __FILE__ ),
+			array( 'moment' ),
+			$script_config['version'],
+			TRUE
+		);
+
+		// from https://github.com/dangrossman/bootstrap-daterangepicker
+		wp_register_script(
+			'bootstrap-daterangepicker',
+			plugins_url( 'js/lib/external/bootstrap-daterangepicker/daterangepicker.min.js', __FILE__ ),
+			array( 'jquery', 'moment-fquarter' ),
+			$script_config['version'],
+			TRUE
+		);
+	}//end register_resources
 
 	/**
 	 * enqueue the needed scripts
 	 */
 	public function enqueue_scripts()
 	{
+		if ( $this->resources_enqueued )
+		{
+			return;
+		}// end if
+		$this->resources_enqueued = TRUE;
+
 		wp_enqueue_script( $this->id_base );
 		wp_localize_script( $this->id_base, 'go_timepicker_base', $this->id_base );
 
@@ -107,6 +158,8 @@ class GO_Timepicker
 	 */
 	public function datetime_picker( $args )
 	{
+		$this->enqueue_scripts();
+
 		$this->timepicker_count++;
 
 		$defaults = array(
@@ -117,13 +170,49 @@ class GO_Timepicker
 		);
 		$args = wp_parse_args( $args, $defaults );
 
-		$this->enqueue_scripts();
-
 		?>
 		<label for="<?php echo esc_attr( $args['field_id'] ); ?>"><?php esc_html( $args['label'] ); ?></label>
 		<input type="text" class="datetime" id="<?php echo esc_attr( $args['field_id'] ); ?>" name="<?php echo esc_attr( $args['field_name'] ); ?>" value="<?php echo esc_attr( $args['value'] ); ?>" size="25" />
 		<?php
 	}//end datetime_picker
+
+	/**
+	 * output HTML for a date range picker
+	 *
+	 * @param array $args of arguments
+	 */
+	public function date_range_picker( $args )
+	{
+		$this->enqueue_scripts();
+
+		$this->date_range_picker_count++;
+
+		$defaults = array(
+			'start' => '',
+			'start_field_id' => $this->id_base . '-daterange-start-' . $this->date_range_picker_count,
+			'start_field_name' => 'daterange_start',
+			'end' => '',
+			'end_field_id' => $this->id_base . '-daterange-end-' . $this->date_range_picker_count,
+			'end_field_name' => 'daterange_end',
+		);
+		$args = wp_parse_args( $args, $defaults );
+
+		if ( ! $args['start'] || ! $args['end'] )
+		{
+			$args['start'] = date( 'Y-m-d', strtotime( '-30 days' ) );
+			$args['end'] = date( 'Y-m-d' );
+		}//end if
+
+		?>
+		<div id="date-range" class="pull-right">
+			<i class="fa fa-calendar fa-lg"></i>
+			<span><?php echo date( 'F j, Y', strtotime( $args['start'] ) ); ?> - <?php echo date( 'F j, Y', strtotime( $args['end'] ) ); ?></span>
+			<i class="fa fa-angle-down"></i>
+			<input type="hidden" id="<?php echo esc_attr( $args['start_field_id'] ); ?>" name="<?php echo esc_attr( $args['start_field_name'] ); ?>" value="<?php echo esc_attr( $args['start'] ); ?>"/>
+			<input type="hidden" id="<?php echo esc_attr( $args['end_field_id']  ); ?>" name="<?php echo esc_attr( $args['end_field_name'] ); ?>" value="<?php echo esc_attr( $args['end'] ); ?>"/>
+		</div>
+		<?php
+	}//end date_range_picker
 
 	/**
 	 * output HTML for a timezone picker
