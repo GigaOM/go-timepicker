@@ -1,10 +1,37 @@
 var go_timepicker = {
 	base: go_timepicker_base,
 	timezone_detected: false,
-	timezone_detect: false
+	timezone_detect: false,
+	event: {}
 };
 
 ( function( $ ) {
+	'use strict';
+
+	/**
+	 * Sets up the date-range picker
+	 */
+	go_timepicker.daterange_picker = function() {
+		this.$date_range = $( '.date-range' );
+		this.$start = this.$date_range.find( 'input[name="daterange_start"]' );
+		this.$end = this.$date_range.find( 'input[name="daterange_end"]' );
+
+		this.$date_range.daterangepicker( {
+			startDate: moment( this.$start.val() ),
+			endDate: moment( this.$end.val() ),
+			ranges: {
+				'Last 7 days': [ moment().subtract( 'days', 6 ), moment() ],
+				'Last 30 days': [ moment().subtract( 'days', 29 ), moment() ],
+				'This week': [ moment().startOf( 'week' ), moment() ],
+				'Last week': [ moment().subtract( 'week', 1 ).startOf( 'week' ), moment().subtract( 'week', 1 ).endOf( 'week' ) ],
+				'This month': [ moment().startOf( 'month' ), moment().endOf( 'month' ) ],
+				'Last month': [ moment().subtract( 'month', 1 ).startOf( 'month' ), moment().subtract( 'month', 1 ).endOf( 'month' ) ]
+			}
+		} );
+
+		this.$date_range.on( 'apply.daterangepicker', this.event.changed_dates );
+	};
+
 	/**
 	 * Sets up date and time pickers
 	 */
@@ -56,7 +83,7 @@ var go_timepicker = {
 		var $map = $button.closest( '.go-timepicker' ).find( '.go-timepicker-map' );
 		var $timezone_image = $map.find( 'img.timezone-image' );
 
-		var hiding = 'Hide map' == $button.text() ? true : false;
+		var hiding = 'Hide map' === $button.text() ? true : false;
 		if ( hiding ) {
 			$button.text( 'Show map' );
 			$button.removeClass( 'visible' );
@@ -178,13 +205,21 @@ var go_timepicker = {
 			 '12': 'Pacific/Wake',
 			 '13': 'Pacific/Enderbury',
 			 '14': 'Pacific/Kiritimati',
-		}
+		};
 
 		var d = new Date();
 		var offset = d.stdTimezoneOffset();
 		offset = parseInt( ( ( offset * -1 ) / 60 ), 10 );
 
 		return default_timezones[ offset ];
+	};
+
+	go_timepicker.event.changed_dates = function() {
+		var datepicker = go_timepicker.$date_range.data( 'daterangepicker' );
+
+		go_timepicker.$date_range.find( 'span' ).html( datepicker.startDate.format( 'MMMM D, YYYY' ) + ' - ' + datepicker.endDate.format( 'MMMM D, YYYY' ) );
+		go_timepicker.$start.val( datepicker.startDate.format( 'YYYY-MM-DD' ) );
+		go_timepicker.$end.val( datepicker.endDate.format( 'YYYY-MM-DD' ) );
 	};
 
 	$( function() {
@@ -206,6 +241,7 @@ var go_timepicker = {
 		} );
 
 		go_timepicker.date_picker();
+		go_timepicker.daterange_picker();
 	});
 })( jQuery );
 
@@ -213,7 +249,9 @@ var go_timepicker = {
 // consistent time zone offset regardless of daylight savings time
 // http://stackoverflow.com/questions/11887934/check-if-daylight-saving-time-is-in-effect-and-if-it-is-for-how-many-hours
 Date.prototype.stdTimezoneOffset = function() {
+	'use strict';
+
     var jan = new Date( this.getFullYear(), 0, 1 );
     var jul = new Date( this.getFullYear(), 6, 1 );
     return Math.max( jan.getTimezoneOffset(), jul.getTimezoneOffset() );
-}
+};
