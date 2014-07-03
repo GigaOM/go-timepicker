@@ -215,8 +215,8 @@ class GO_Timepicker
 			<i class="fa fa-calendar fa-lg"></i>
 			<span><?php echo date( 'F j, Y', strtotime( $args['start'] ) ); ?> - <?php echo date( 'F j, Y', strtotime( $args['end'] ) ); ?></span>
 			<i class="fa fa-angle-down"></i>
-			<input type="hidden" id="<?php echo esc_attr( $args['start_field_id'] ); ?>" name="<?php echo esc_attr( $args['start_field_name'] ); ?>" value="<?php echo esc_attr( $args['start'] ); ?>"/>
-			<input type="hidden" id="<?php echo esc_attr( $args['end_field_id']  ); ?>" name="<?php echo esc_attr( $args['end_field_name'] ); ?>" value="<?php echo esc_attr( $args['end'] ); ?>"/>
+			<input type="hidden" class="daterange-start" id="<?php echo esc_attr( $args['start_field_id'] ); ?>" name="<?php echo esc_attr( $args['start_field_name'] ); ?>" value="<?php echo esc_attr( $args['start'] ); ?>"/>
+			<input type="hidden" class="daterange-end" id="<?php echo esc_attr( $args['end_field_id']  ); ?>" name="<?php echo esc_attr( $args['end_field_name'] ); ?>" value="<?php echo esc_attr( $args['end'] ); ?>"/>
 		</div>
 		<?php
 	}//end date_range_picker

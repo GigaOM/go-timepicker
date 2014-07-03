@@ -13,8 +13,8 @@ var go_timepicker = {
 	 */
 	go_timepicker.daterange_picker = function() {
 		this.$date_range = $( '.date-range' );
-		this.$start = this.$date_range.find( 'input[name="daterange_start"]' );
-		this.$end = this.$date_range.find( 'input[name="daterange_end"]' );
+		this.$start = this.$date_range.find( '.daterange-start' );
+		this.$end = this.$date_range.find( '.daterange-end' );
 
 		this.$date_range.daterangepicker( {
 			startDate: moment( this.$start.val() ),
