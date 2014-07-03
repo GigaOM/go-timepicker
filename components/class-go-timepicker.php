@@ -125,6 +125,13 @@ class GO_Timepicker
 		);
 
 		// from https://github.com/dangrossman/bootstrap-daterangepicker
+		wp_register_style(
+			'go-timepicker-daterangepicker',
+			plugins_url( 'css/go-timepicker-daterangepicker.css', __FILE__ ),
+			array(),
+			$script_config['version']
+		);
+
 		wp_register_script(
 			'bootstrap-daterangepicker',
 			plugins_url( 'js/lib/external/bootstrap-daterangepicker/daterangepicker.min.js', __FILE__ ),
@@ -204,12 +211,12 @@ class GO_Timepicker
 		}//end if
 
 		?>
-		<div id="date-range" class="pull-right">
+		<div class="date-range" class="pull-right">
 			<i class="fa fa-calendar fa-lg"></i>
 			<span><?php echo date( 'F j, Y', strtotime( $args['start'] ) ); ?> - <?php echo date( 'F j, Y', strtotime( $args['end'] ) ); ?></span>
 			<i class="fa fa-angle-down"></i>
-			<input type="hidden" id="<?php echo esc_attr( $args['start_field_id'] ); ?>" name="<?php echo esc_attr( $args['start_field_name'] ); ?>" value="<?php echo esc_attr( $args['start'] ); ?>"/>
-			<input type="hidden" id="<?php echo esc_attr( $args['end_field_id']  ); ?>" name="<?php echo esc_attr( $args['end_field_name'] ); ?>" value="<?php echo esc_attr( $args['end'] ); ?>"/>
+			<input type="hidden" class="daterange-start" id="<?php echo esc_attr( $args['start_field_id'] ); ?>" name="<?php echo esc_attr( $args['start_field_name'] ); ?>" value="<?php echo esc_attr( $args['start'] ); ?>"/>
+			<input type="hidden" class="daterange-end" id="<?php echo esc_attr( $args['end_field_id']  ); ?>" name="<?php echo esc_attr( $args['end_field_name'] ); ?>" value="<?php echo esc_attr( $args['end'] ); ?>"/>
 		</div>
 		<?php
 	}//end date_range_picker
