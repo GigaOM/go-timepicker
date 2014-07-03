@@ -34,6 +34,19 @@ var go_timepicker = {
 	};
 
 	/**
+	 * handles the changing of the daterangepicker dates
+	 */
+	go_timepicker.changed_dates = function() {
+		var datepicker = this.$date_range.data( 'daterangepicker' );
+
+		this.$date_range.find( 'span' ).html( datepicker.startDate.format( 'MMMM D, YYYY' ) + ' - ' + datepicker.endDate.format( 'MMMM D, YYYY' ) );
+		this.$start.val( datepicker.startDate.format( 'YYYY-MM-DD' ) );
+		this.$end.val( datepicker.endDate.format( 'YYYY-MM-DD' ) );
+
+		$( document ).trigger( 'go-timepicker-daterange-changed-dates' );
+	};
+
+	/**
 	 * Sets up date and time pickers
 	 */
 	go_timepicker.date_picker = function() {
@@ -215,14 +228,11 @@ var go_timepicker = {
 		return default_timezones[ offset ];
 	};
 
+	/**
+	 * event picker changed
+	 */
 	go_timepicker.event.changed_dates = function() {
-		var datepicker = go_timepicker.$date_range.data( 'daterangepicker' );
-
-		go_timepicker.$date_range.find( 'span' ).html( datepicker.startDate.format( 'MMMM D, YYYY' ) + ' - ' + datepicker.endDate.format( 'MMMM D, YYYY' ) );
-		go_timepicker.$start.val( datepicker.startDate.format( 'YYYY-MM-DD' ) );
-		go_timepicker.$end.val( datepicker.endDate.format( 'YYYY-MM-DD' ) );
-
-		$( document ).trigger( 'go-timepicker-daterange-changed-dates' );
+		go_timepicker.changed_dates();
 	};
 
 	$( function() {
