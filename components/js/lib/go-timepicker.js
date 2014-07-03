@@ -220,6 +220,8 @@ var go_timepicker = {
 		go_timepicker.$date_range.find( 'span' ).html( datepicker.startDate.format( 'MMMM D, YYYY' ) + ' - ' + datepicker.endDate.format( 'MMMM D, YYYY' ) );
 		go_timepicker.$start.val( datepicker.startDate.format( 'YYYY-MM-DD' ) );
 		go_timepicker.$end.val( datepicker.endDate.format( 'YYYY-MM-DD' ) );
+
+		$( document ).trigger( 'go-timepicker-daterange-changed-dates' );
 	};
 
 	$( function() {
