@@ -17,6 +17,7 @@ var go_timepicker = {
 		this.$end = this.$date_range.find( '.daterange-end' );
 
 		this.$date_range.daterangepicker( {
+			opens: 'left',
 			startDate: moment( this.$start.val() ),
 			endDate: moment( this.$end.val() ),
 			ranges: {
