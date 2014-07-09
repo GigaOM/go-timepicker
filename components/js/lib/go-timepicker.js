@@ -13,6 +13,11 @@ var go_timepicker = {
 	 */
 	go_timepicker.daterange_picker = function() {
 		this.$date_range = $( '.date-range' );
+
+		if ( ! this.$date_range.length ) {
+			return;
+		}//end if
+
 		this.$start = this.$date_range.find( '.daterange-start' );
 		this.$end = this.$date_range.find( '.daterange-end' );
 
