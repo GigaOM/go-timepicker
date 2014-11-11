@@ -88,7 +88,7 @@ class GO_Timepicker
 		wp_register_script(
 			$this->id_base,
 			plugins_url( 'js/lib/go-timepicker.js', __FILE__ ),
-			array( 'jquery-timezone-picker', 'jquery-ui-timepicker-addon' ),
+			array( 'jquery-timezone-picker', 'jquery-ui-timepicker-addon', 'moment', 'bootstrap-daterangepicker' ),
 			$script_config['version'],
 			TRUE
 		);
