@@ -139,6 +139,8 @@ class GO_Timepicker
 			$script_config['version'],
 			TRUE
 		);
+
+		wp_localize_script( $this->id_base, 'go_timepicker_base', $this->id_base );
 	}//end register_resources
 
 	/**
