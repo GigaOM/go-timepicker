@@ -368,7 +368,7 @@ class GO_Timepicker
 			}//end if
 			else
 			{
-				$json_data = file_get_contents( __DIR__ . '/js/data/timepicker-' . absint( $size ) . '.json' );
+				$json_data = file_get_contents( __DIR__ . '/js/lib/data/timepicker-' . absint( $size ) . '.json' );
 				$this->map_data[ $size ] = json_decode( $json_data, TRUE );
 			}//end else
 		}//end if
