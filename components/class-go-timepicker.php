@@ -39,9 +39,11 @@ class GO_Timepicker
 
 		$script_config = apply_filters( 'go-config', array( 'version' => 1 ), 'go-script-version' );
 
+		$js_min = ( defined( 'GO_DEV' ) && GO_DEV ) ? 'lib' : 'min';
+
 		wp_register_script(
 			'jquery-maphilight',
-			plugins_url( 'js/lib/external/jquery.maphilight.js', __FILE__ ),
+			plugins_url( 'js/' . $js_min . '/external/jquery.maphilight.js', __FILE__ ),
 			array( 'jquery' ),
 			$script_config['version'],
 			TRUE
@@ -49,7 +51,7 @@ class GO_Timepicker
 
 		wp_register_script(
 			'jquery-timezone-picker',
-			plugins_url( 'js/lib/external/jquery.timezone-picker.js', __FILE__ ),
+			plugins_url( 'js/' . $js_min . '/external/jquery.timezone-picker.js', __FILE__ ),
 			array( 'jquery-maphilight' ),
 			$script_config['version'],
 			TRUE
@@ -57,7 +59,7 @@ class GO_Timepicker
 
 		wp_register_script(
 			'jquery-ui-slideraccess',
-			plugins_url( 'js/lib/external/timepicker-addon/jquery-ui-sliderAccess.min.js', __FILE__ ),
+			plugins_url( 'js/' . $js_min . '/external/timepicker-addon/jquery-ui-sliderAccess.min.js', __FILE__ ),
 			array( 'jquery-ui-core' ),
 			$script_config['version'],
 			TRUE
@@ -72,7 +74,7 @@ class GO_Timepicker
 
 		wp_register_script(
 			'jquery-ui-timepicker-addon',
-			plugins_url( 'js/lib/external/timepicker-addon/jquery-ui-timepicker-addon.min.js', __FILE__ ),
+			plugins_url( 'js/' . $js_min . '/external/timepicker-addon/jquery-ui-timepicker-addon.min.js', __FILE__ ),
 			array( 'jquery-ui-datepicker', 'jquery-ui-slideraccess' ),
 			$script_config['version'],
 			TRUE
@@ -80,14 +82,14 @@ class GO_Timepicker
 
 		wp_register_style(
 			'jquery-ui-timepicker-addon',
-			plugins_url( 'js/lib/external/timepicker-addon/jquery-ui-timepicker-addon.css', __FILE__ ),
+			plugins_url( 'js/' . $js_min . '/external/timepicker-addon/jquery-ui-timepicker-addon.css', __FILE__ ),
 			array( 'jquery-ui-smoothness' ),
 			$script_config['version']
 		);
 
 		wp_register_script(
 			$this->id_base,
-			plugins_url( 'js/lib/go-timepicker.js', __FILE__ ),
+			plugins_url( 'js/' . $js_min . '/go-timepicker.js', __FILE__ ),
 			array( 'jquery-timezone-picker', 'jquery-ui-timepicker-addon' ),
 			$script_config['version'],
 			TRUE
@@ -102,14 +104,14 @@ class GO_Timepicker
 
 		wp_register_style(
 			'bootstrap-daterangepicker',
-			plugins_url( 'js/lib/external/bootstrap-daterangepicker/daterangepicker-bs3.css', __FILE__ ),
+			plugins_url( 'js/' . $js_min . '/external/bootstrap-daterangepicker/daterangepicker-bs3.css', __FILE__ ),
 			array(),
 			$script_config['version']
 		);
 
 		wp_register_script(
 			'moment',
-			plugins_url( 'js/lib/external/moment.min.js', __FILE__ ),
+			plugins_url( 'js/' . $js_min . '/external/moment.min.js', __FILE__ ),
 			array(),
 			$script_config['version'],
 			TRUE
@@ -118,7 +120,7 @@ class GO_Timepicker
 		// fiscal quarter momentjs plugin
 		wp_register_script(
 			'moment-fquarter',
-			plugins_url( 'js/lib/external/moment-fquarter.min.js', __FILE__ ),
+			plugins_url( 'js/' . $js_min . '/external/moment-fquarter.min.js', __FILE__ ),
 			array( 'moment' ),
 			$script_config['version'],
 			TRUE
@@ -134,7 +136,7 @@ class GO_Timepicker
 
 		wp_register_script(
 			'bootstrap-daterangepicker',
-			plugins_url( 'js/lib/external/bootstrap-daterangepicker/daterangepicker.min.js', __FILE__ ),
+			plugins_url( 'js/' . $js_min . '/external/bootstrap-daterangepicker/daterangepicker.min.js', __FILE__ ),
 			array( 'jquery', 'moment-fquarter' ),
 			$script_config['version'],
 			TRUE
