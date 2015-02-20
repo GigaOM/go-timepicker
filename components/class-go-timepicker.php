@@ -82,7 +82,7 @@ class GO_Timepicker
 
 		wp_register_style(
 			'jquery-ui-timepicker-addon',
-			plugins_url( 'js/' . $js_min . '/external/timepicker-addon/jquery-ui-timepicker-addon.css', __FILE__ ),
+			plugins_url( 'js/lib/external/timepicker-addon/jquery-ui-timepicker-addon.css', __FILE__ ),
 			array( 'jquery-ui-smoothness' ),
 			$script_config['version']
 		);
@@ -104,7 +104,7 @@ class GO_Timepicker
 
 		wp_register_style(
 			'bootstrap-daterangepicker',
-			plugins_url( 'js/' . $js_min . '/external/bootstrap-daterangepicker/daterangepicker-bs3.css', __FILE__ ),
+			plugins_url( 'js/lib/external/bootstrap-daterangepicker/daterangepicker-bs3.css', __FILE__ ),
 			array(),
 			$script_config['version']
 		);
